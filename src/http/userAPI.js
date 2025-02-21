@@ -1,5 +1,7 @@
-import { $host, $authHost } from "./index";
+    import { $host, $authHost } from "./index";
 import { jwtDecode } from 'jwt-decode';
+
+
 
 export const registration = async (email, phone, password, passwordCheck, FIO, address) => {
     try {
@@ -36,8 +38,8 @@ export const getAllManuf = async () => {
 export const updatePhone = async (phone) => {
     try {
         const { data } = await $authHost.patch('manufacturer/patch', {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}`},
-            data: {phone: phone}
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            data: { phone: phone }
         })
         return data
     } catch (error) {
@@ -46,12 +48,26 @@ export const updatePhone = async (phone) => {
     }
 }
 
-export const destroyUser = async (phone) => {
+export const destroyUser = async () => {
     try {
         const { data } = await $authHost.delete('manufacturer/delete', null, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}`},
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
-    )
+        )
+        return data
+    } catch (error) {
+        alert(error.response.data.message)
+        return
+    }
+}
+
+
+export const changeProfile = async (FIO, phone, email, address, password, checkPassword) => {
+    try {
+        const { data } = await $authHost.patch('user/patch', {
+            headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
+            data: {FIO: FIO, phone: phone, email: email, address: address, password: password, checkPassword: checkPassword}
+        })
         return data
     } catch (error) {
         alert(error.response.data.message)
