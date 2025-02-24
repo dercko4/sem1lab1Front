@@ -3,8 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { registration } from "../http/userAPI"
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
-import { MAKE_REQUEST_ROUTE } from "../utils/consts";
-import { Button, Form } from "react-bootstrap"
+import { LOGIN_ROUTE } from "../utils/consts";
+import { Button, Form, Container, Nav } from "react-bootstrap"
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 
 const Registration = observer(() => {
@@ -25,7 +27,6 @@ const Registration = observer(() => {
             if (!response) return
             user.setUser()
             user.setIsAuth(true)
-            navigate(MAKE_REQUEST_ROUTE)
         } catch (error) {
             console.log(error)
             alert(error)
@@ -34,47 +35,110 @@ const Registration = observer(() => {
 
     return (
         <>
-            <Form className="d-flex flex-column" style={{ justifyContent: "center" }}>
-                <Form.Control
-                    placeholder="Ваше ФИО..."
-                    value={FIO}
-                    onChange={(e) => setFIO(e.target.value)}
-                />
-                <Form.Control
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Ваш телефон..."
-                />
-                <Form.Control
-                    
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Ваш email..."
-                />
-                <Form.Control
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Ваш адрес..."
-                />
-                <Form.Control
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Ваш пароль..."
-                />
-                <Form.Control
-                    value={passwordCheck}
-                    onChange={(e) => setPasswordCheck(e.target.value)}
-                    placeholder="Ваш пароль еще раз..."
-                />
-                
-                <Button
-                    variant={"outline-dark"}
-                    size="lg"
-                    onClick={submit}>
-                    Зарегистрироваться
-                </Button>
+            <Container style={{
+                height: "100vh", width: "100vw", justifyContent: "center", alignItems: "center", maxWidth: "100vw", maxHeight: "100vh",
+                display: "flex", backgroundColor: "orange",
+                background: "linear-gradient(to bottom right, rgba(167, 167, 220, 100) 0%, #8F90E9 50%, #8283F0)",
+            }}>
 
-            </Form>
+                <Container style={{
+                    backgroundColor: "#66A4E1", width: "1422px", opacity: "70%",
+                    height: "750px", borderRadius: "30px", border: "1px outset black"
+                }}>
+                    <Form style={{ display: "inline-block" }}>
+
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginLeft: "80px", marginTop: "40px", display: "inline-block"
+                            }}
+                            value={FIO}
+                            onChange={(e) => setFIO(e.target.value)}
+                            placeholder="Введите ФИО..."
+                        />
+
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginTop: "40px", display: "inline-block", marginLeft: "62px",
+                            }}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Введите email..."
+                        />
+
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginLeft: "80px", marginTop: "40px", display: "inline-block",
+                            }}
+                            value={phone}
+                            inputMode="tel"
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="Ваш телефон..."
+                        />
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginTop: "40px", display: "inline-block", marginLeft: "62px",
+                            }}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Введите пароль..."
+                        />
+
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginLeft: "80px", marginTop: "40px", display: "inline-block"
+                            }}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Введите адрес..."
+                        />
+
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginTop: "40px", display: "inline-block", marginLeft: "62px",
+                            }}
+                            value={passwordCheck}
+                            onChange={(e) => setPasswordCheck(e.target.value)}
+                            placeholder="Введите пароль ещё раз..."
+                        />
+                        <Button
+                            variant={"outline-dark"}
+                            style={{
+                                backgroundColor: "#43D248", width: "408px", height: "70px",
+                                borderRadius: "15px", border: "1px solid black", opacity: "58%",
+                                color: "#1BFF0F", WebkitTextStrokeWidth: "3px", WebkitTextStroke: "0.025em black", fontSize: "28px",
+                                fontFamily: "Jost, normal", marginTop: "110px", display: "flex", marginLeft: "430px",
+                                justifyContent: "center", alignItems: "center",
+                            }}
+                            size="lg"
+                            onClick={submit}>
+                            Зарегистрироваться
+                        </Button>
+                        <Nav style={{ display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "0px" }}>
+                            <Nav.Item style={{ fontFamily: "Jost, normal", color: "#E5CD42", fontSize: "28px" }}>
+                                Есть акканут? <Nav.Link style={{
+                                    padding: "0 0",
+                                    display: "inline", color: "#1BFF0F", fontSize: "28px", fontFamily: "Jost, normal"
+
+                                }}
+                                    href={LOGIN_ROUTE}>Войти</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Form>
+                </Container>
+            </Container>
+
         </>
     );
 })
