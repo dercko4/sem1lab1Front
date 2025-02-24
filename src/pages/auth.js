@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { destroyUser, getAllManuf, login, updatePhone } from "../http/userAPI"
 import { observer } from "mobx-react-lite";
-import { MAKE_REQUEST_ROUTE } from "../utils/consts";
-import { Button, Container, Form } from "react-bootstrap"
+import { MAKE_REQUEST_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
+import { Button, Container, Form, Nav } from "react-bootstrap"
 import { Context } from "../index";
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -99,11 +99,25 @@ const Auth = observer(() => {
                         />
                         <Button
                             variant={"outline-dark"}
-                            style={{backgroundColor: "#43D248", width: "200px", height: "70px", borderRadius: "15px", border: "1px solid black", opacity: "58%"}}
+                            style={{
+                                backgroundColor: "#43D248", width: "200px", height: "70px",
+                                borderRadius: "15px", border: "1px solid black", opacity: "58%",
+                                color: "#1BFF0F", WebkitTextStrokeWidth: "3px", WebkitTextStroke: "0.025em black", fontSize: "28px",
+                                fontFamily: "Jost, normal", marginTop: "110px", marginLeft: "235px"
+                            }}
                             size="lg"
                             onClick={submit}>
                             Войти
                         </Button>
+                        <Nav style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Nav.Item style={{ fontFamily: "Jost, normal", color: "#E5CD42", fontSize: "28px" }}>
+                                Нет аккаунта? <Nav.Link style={{ padding: "0 0",
+                                 display: "inline", color: "#1BFF0F", fontSize: "28px", fontFamily: "Jost, normal"
+
+                                 }} 
+                                href={REGISTRATION_ROUTE}>Зарегистрироваться</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
 
                     </Form>
                 </Container>
