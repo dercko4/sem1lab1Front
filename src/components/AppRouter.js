@@ -18,7 +18,7 @@ const AppRouter = () => {
     )} 
     <Route>
         {publicRoutes.map(({path, Component}) =>
-        <Route  path="*" element = {<Navigate> to={LOGIN_ROUTE}</Navigate>} replace/>
+        <Route path="*" element = {<Navigate> to={LOGIN_ROUTE}</Navigate>} replace/>
     )}
     </Route>
     <Route>

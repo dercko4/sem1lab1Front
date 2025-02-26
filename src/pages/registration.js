@@ -4,10 +4,8 @@ import { registration } from "../http/userAPI"
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { LOGIN_ROUTE } from "../utils/consts";
+import MaskedFormControl from 'react-bootstrap-maskedinput'
 import { Button, Form, Container, Nav } from "react-bootstrap"
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
-
 
 const Registration = observer(() => {
     document.body.style.backgroundColor = "#faeedd"
@@ -45,7 +43,7 @@ const Registration = observer(() => {
                     backgroundColor: "#66A4E1", width: "1422px", opacity: "70%",
                     height: "750px", borderRadius: "30px", border: "1px outset black"
                 }}>
-                    <Form style={{ display: "inline-block" }}>
+                    <Form style={{ display: "inline-block" }} data-mdb-input-mask-init>
 
                         <Form.Control
                             style={{
@@ -69,16 +67,19 @@ const Registration = observer(() => {
                             placeholder="Введите email..."
                         />
 
-                        <Form.Control
+                        <MaskedFormControl
+                            
                             style={{
                                 backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
                                 height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
                                 marginLeft: "80px", marginTop: "40px", display: "inline-block",
                             }}
+                            type="text"
                             value={phone}
-                            inputMode="tel"
+                            mask="+7(111)111-11-11"
                             onChange={(e) => setPhone(e.target.value)}
-                            placeholder="Ваш телефон..."
+                            placeholder="+7(111)111-11-11"
+
                         />
                         <Form.Control
                             style={{
