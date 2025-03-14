@@ -1,67 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { destroyUser, getAllManuf, login, updatePhone } from "../http/userAPI"
-import { observer } from "mobx-react-lite";
-import { MAKE_REQUEST_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
+import React, {useState } from "react";
+import {login, } from "../http/userAPI"
+import { observer } from "mobx-react";
+import { PROFILE_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 import { Button, Container, Form, Nav } from "react-bootstrap"
-import { Context } from "../index";
-import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from "react-router-dom";
 
 
-
-const Auth = observer(() => {
+export const Auth = observer(() => {
     document.body.style.backgroundColor = "#FFFFFF"
-    const { user } = useContext(Context)
-    const navigate = useNavigate()
     const [password, setPassword] = useState('')
-    const [phone, setPhone] = useState('')
+    const navigate = useNavigate()  
     const [email, setEmail] = useState('')
-    const { UserRequest } = useContext(Context)
-    const [showModal, setShowModal] = useState(false);
     const submit = async () => {
         try {
             const response = await login(email, password)
+            console.log(localStorage.getItem("token"))
             if (!response) return
-            user.setUser()
-            user.setIsAuth(true)
-            navigate(MAKE_REQUEST_ROUTE)
-        } catch (error) {
-            console.log(error)
-            alert(error)
-        }
-    }
-    const getAll = async () => {
-        const response = await getAllManuf()
-        console.log(response)
-        return response
-    }
-
-    const update = async (aboba) => {
-        try {
-            const response = await updatePhone(aboba)
-            console.log(response)
-            return response
+            navigate(PROFILE_ROUTE)
         } catch (error) {
             console.log(error)
             alert(error)
         }
     }
 
-    const deleteSelf = async () => {
-        try {
-            const response = await destroyUser()
-            console.log(response)
-            return response
-        } catch (error) {
-            console.log(error)
-            alert(error)
-        }
-    }
 
-    useEffect(() => {
-        getAll().then(data => { UserRequest.setUserRequest(data) })
-    }, [])
     return (
         <>
             <Container style={{
@@ -94,7 +57,7 @@ const Auth = observer(() => {
                                 marginTop: 80
                             }}
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}z
                             placeholder="Ваш пароль..."
                         />
                         <Button
@@ -106,6 +69,7 @@ const Auth = observer(() => {
                                 fontFamily: "Jost, normal", marginTop: "110px", marginLeft: "235px"
                             }}
                             size="lg"
+                            type="button"
                             onClick={submit}>
                             Войти
                         </Button>
@@ -127,49 +91,4 @@ const Auth = observer(() => {
     );
 })
 
-export default Auth;
 
-
-{/* <Form className="d-flex flex-column" style={{ justifyContent: "center", marginTop: 100 }}>
-                        <Form.Control
-
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="На какой телефон изменить:"
-                        />
-                    </Form>
-                    <Button
-                        variant={"outline-dark"}
-                        size="lg"
-                        onClick={() => update(phone)}>
-                        Изменить
-                    </Button>
-                    <Button
-                        variant={"outline-dark"}
-                        style={{ marginTop: 300 }}
-                        size="lg"
-                        onClick={() => setShowModal(true)}>
-                        Уничтожить себя 0_0
-                    </Button>
-
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Рил хочешь? (дурак?)</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            Вы уверены, что РЕАЛЬНО ХОТИТЕ УНИЧТОЖИТЬ себя?
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                НЕТ, ПОЖАЛУЙСТА
-                            </Button>
-                            <Button variant="danger"
-                                onClick={() => {
-                                    deleteSelf()
-                                    setShowModal(false)
-                                }}>
-                                ДАААА
-                            </Button>
-
-                        </Modal.Footer>
-                    </Modal> */}

@@ -1,35 +1,61 @@
-import React, { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { registration } from "../http/userAPI"
+import React, { useState, useEffect, useContext } from "react";
+import { changeProfile, findOneUser } from "../http/userAPI"
 import { observer } from "mobx-react-lite";
-import { Context } from "../index";
 import { LOGIN_ROUTE } from "../utils/consts";
 import MaskedFormControl from 'react-bootstrap-maskedinput'
-import { Button, Form, Container, Nav } from "react-bootstrap"
+import { Button, Form, Container } from "react-bootstrap"
+import { useNavigate } from "react-router-dom";
+import { Context } from "../index";
+
+
 
 const Profile = observer(() => {
     document.body.style.backgroundColor = "#faeedd"
-    const { user } = useContext(Context)
-    const navigate = useNavigate()
-    const location = useLocation()
     const [password, setPassword] = useState('')
     const [FIO, setFIO] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [passwordCheck, setPasswordCheck] = useState('')
     const [address, setAddress] = useState('')
-
+    const navigate = useNavigate()
+    const { userRequest } = useContext(Context)
     const submit = async () => {
         try {
-            const response = await registration(email, phone, password, passwordCheck, FIO, address)
+            if(password!=passwordCheck) {
+                alert("Пароли не совпадают!")
+                return
+            }
+            const response = await changeProfile(email, phone, password, passwordCheck, FIO, address)
             if (!response) return
-            user.setUser()
-            user.setIsAuth(true)
         } catch (error) {
             console.log(error)
             alert(error)
         }
     }
+    const exit = async () => {
+        try {
+            localStorage.removeItem("token")
+            navigate(LOGIN_ROUTE)
+        } catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
+    const findOneUser1 = async () => {
+        try {
+            const response = await findOneUser()
+            return response
+        } catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
+
+    useEffect(() => {
+        findOneUser1().then((data) => userRequest.setUserRequest(data))
+    }, [])
 
     return (
         <>
@@ -53,7 +79,7 @@ const Profile = observer(() => {
                             }}
                             value={FIO}
                             onChange={(e) => setFIO(e.target.value)}
-                            placeholder="Введите ФИО..."
+                            placeholder={userRequest.getUserRequest().FIO}
                         />
 
                         <Form.Control
@@ -64,11 +90,11 @@ const Profile = observer(() => {
                             }}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Введите email..."
+                            placeholder={userRequest.getUserRequest().email}
                         />
 
                         <MaskedFormControl
-                            
+
                             style={{
                                 backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
                                 height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
@@ -78,7 +104,7 @@ const Profile = observer(() => {
                             value={phone}
                             mask="+7(111)111-11-11"
                             onChange={(e) => setPhone(e.target.value)}
-                            placeholder="+7(111)111-11-11"
+                            placeholder={userRequest.getUserRequest().phone}
 
                         />
                         <Form.Control
@@ -89,18 +115,7 @@ const Profile = observer(() => {
                             }}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Введите пароль..."
-                        />
-
-                        <Form.Control
-                            style={{
-                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
-                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
-                                marginLeft: "80px", marginTop: "40px", display: "inline-block"
-                            }}
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Введите адрес..."
+                            placeholder="Новый пароль..."
                         />
 
                         <Form.Control
@@ -124,18 +139,21 @@ const Profile = observer(() => {
                             }}
                             size="lg"
                             onClick={submit}>
-                            Зарегистрироваться
+                            Обновить
                         </Button>
-                        <Nav style={{ display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "0px" }}>
-                            <Nav.Item style={{ fontFamily: "Jost, normal", color: "#E5CD42", fontSize: "28px" }}>
-                                Есть акканут? <Nav.Link style={{
-                                    padding: "0 0",
-                                    display: "inline", color: "#1BFF0F", fontSize: "28px", fontFamily: "Jost, normal"
-
-                                }}
-                                    href={LOGIN_ROUTE}>Войти</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
+                        <Button
+                            variant={"outline-dark"}
+                            style={{
+                                backgroundColor: "#43D248", width: "408px", height: "70px",
+                                borderRadius: "15px", border: "1px solid black", opacity: "58%",
+                                color: "#1BFF0F", WebkitTextStrokeWidth: "3px", WebkitTextStroke: "0.025em black", fontSize: "28px",
+                                fontFamily: "Jost, normal", marginTop: "110px", display: "flex", marginLeft: "430px",
+                                justifyContent: "center", alignItems: "center",
+                            }}
+                            size="lg"
+                            onClick={exit}>
+                            Выйти
+                        </Button>
                     </Form>
                 </Container>
             </Container>

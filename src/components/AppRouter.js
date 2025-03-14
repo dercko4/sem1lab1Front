@@ -1,41 +1,37 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { publicRoutes } from "../routes";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, MAKE_REQUEST_ROUTE, PROFILE_ROUTE } from "../utils/consts";
-import { Context } from "../index";
+import { publicRoutes, authRoutes, adminRoutes } from "../routes";
+import { LOGIN_ROUTE } from "../utils/consts";
+import { observer } from "mobx-react-lite";
+import { findOneUser } from "../http/userAPI";
+import { jwtDecode } from "jwt-decode";
 
-const AppRouter = () => {
-    const { user } = useContext(Context)
-    let isAuth = user.getisAuth()
+
+const AppRouter = observer(() => {
+    let isAuth = localStorage.getItem("token")
+    let isAdmin = false
+    if(isAuth){
+        const decodedToken = jwtDecode(isAuth)
+        decodedToken.role === 'admin' ? isAdmin = true : isAdmin = false
+    }
     return (
         <Routes>
-            {isAuth && publicRoutes.map(({ path, Component }) =>
-                <Route key={path} path={path} element={<Component />} exact />
-            )}
+            {
+                isAuth && authRoutes.map(({ path, Component }) =>
+                    <Route key={path} path={path} element={Component}
+                        exact />
+                )}
             {publicRoutes.map(({ path, Component }) =>
-                <Route key={path} path={path} element={<Component />} exact />
+                <Route key={path} path={path} element={Component}
+                    exact />
             )}
-            <Route>
-                {publicRoutes.map(({ path, Component }) =>
-                    <Route path="*" element={<Navigate> to={LOGIN_ROUTE}</Navigate>} replace />
+            {
+                isAuth && isAdmin && adminRoutes.map(({ path, Component }) =>
+                    <Route key={path} path={path} element={Component}
+                        exact />
                 )}
-            </Route>
-            <Route>
-                {publicRoutes.map(({ path, Component }) =>
-                    <Route path="*" element={<Navigate> to={REGISTRATION_ROUTE}</Navigate>} replace />
-                )}
-            </Route>
-            <Route>
-                {publicRoutes.map(({ path, Component }) =>
-                    <Route path="*" element={<Navigate> to={MAKE_REQUEST_ROUTE}</Navigate>} replace />
-                )}
-            </Route>
-            <Route>
-                {publicRoutes.map(({ path, Component }) =>
-                    <Route path="*" element={<Navigate> to={PROFILE_ROUTE}</Navigate>} replace />
-                )}
-            </Route>
+            <Route path="*" element={<Navigate replace to={LOGIN_ROUTE} />} />
         </Routes>
     )
-};
+});
 export default AppRouter;

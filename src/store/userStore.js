@@ -1,21 +1,19 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable} from "mobx";
 
 export default class UserStore {
+    
     constructor() {
-        this._isAuth = true
-        this._user = []
+        this._isAuth = false
         makeAutoObservable(this)
     }
-    setIsAuth(bool) {
-        this._isAuth = bool
+    
+    setFalseAuth() {
+        this._isAuth = false
     }
-    setUser(user) {
-        this._user = user
+    setTrueAuth() { 
+        this._isAuth = true
     }
-    getisAuth() {
+    get getisAuth() {
         return this._isAuth
-    }
-    getUser() {
-        return this._user
     }
 }

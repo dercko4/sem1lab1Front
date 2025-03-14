@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { registration } from "../http/userAPI"
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
@@ -7,24 +6,23 @@ import { LOGIN_ROUTE } from "../utils/consts";
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 import { Button, Form, Container, Nav } from "react-bootstrap"
 
+
+
 const Registration = observer(() => {
+    const {user} = useContext(Context)
     document.body.style.backgroundColor = "#faeedd"
-    const { user } = useContext(Context)
-    const navigate = useNavigate()
-    const location = useLocation()
     const [password, setPassword] = useState('')
     const [FIO, setFIO] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [passwordCheck, setPasswordCheck] = useState('')
     const [address, setAddress] = useState('')
-
+    
     const submit = async () => {
         try {
             const response = await registration(email, phone, password, passwordCheck, FIO, address)
             if (!response) return
-            user.setUser()
-            user.setIsAuth(true)
+            user.setTrueAuth()
         } catch (error) {
             console.log(error)
             alert(error)

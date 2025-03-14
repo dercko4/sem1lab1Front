@@ -1,6 +1,9 @@
-    import { $host, $authHost } from "./index";
+import { $host, $authHost } from "./index";
 import { jwtDecode } from 'jwt-decode';
 
+function removeEmpty(obj) {
+    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != ''));
+}
 
 
 export const registration = async (email, phone, password, passwordCheck, FIO, address) => {
@@ -67,11 +70,27 @@ export const destroyUser = async () => {
 }
 
 
+export const findOneUser = async () => {
+    try {
+        const { data } = await $authHost.post('user/findOne', null, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+        )
+        console.log(data)
+        return data
+    } catch (error) {
+        alert(error.response.data.message)
+        return
+    }
+}
+
 export const changeProfile = async (FIO, phone, email, address, password, checkPassword) => {
     try {
+        let obj = { FIO: FIO, phone: phone, email: email, address: address, password: password, checkPassword: checkPassword }
+        obj = removeEmpty(obj)
         const { data } = await $authHost.patch('user/patch', {
-            headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
-            data: {FIO: FIO, phone: phone, email: email, address: address, password: password, checkPassword: checkPassword}
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            data: obj
         })
         return data
     } catch (error) {
