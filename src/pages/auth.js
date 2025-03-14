@@ -1,5 +1,5 @@
-import React, {useState } from "react";
-import {login, } from "../http/userAPI"
+import React, { useState } from "react";
+import { login, } from "../http/userAPI"
 import { observer } from "mobx-react";
 import { PROFILE_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 import { Button, Container, Form, Nav } from "react-bootstrap"
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export const Auth = observer(() => {
     document.body.style.backgroundColor = "#FFFFFF"
     const [password, setPassword] = useState('')
-    const navigate = useNavigate()  
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const submit = async () => {
         try {
@@ -57,7 +57,7 @@ export const Auth = observer(() => {
                                 marginTop: 80
                             }}
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}z
+                            onChange={(e) => setPassword(e.target.value)} z
                             placeholder="Ваш пароль..."
                         />
                         <Button
@@ -75,11 +75,12 @@ export const Auth = observer(() => {
                         </Button>
                         <Nav style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                             <Nav.Item style={{ fontFamily: "Jost, normal", color: "#E5CD42", fontSize: "28px" }}>
-                                Нет аккаунта? <Nav.Link style={{ padding: "0 0",
-                                 display: "inline", color: "#1BFF0F", fontSize: "28px", fontFamily: "Jost, normal"
+                                Нет аккаунта? <Nav.Link style={{
+                                    padding: "0 0",
+                                    display: "inline", color: "#1BFF0F", fontSize: "28px", fontFamily: "Jost, normal"
 
-                                 }} 
-                                href={REGISTRATION_ROUTE}>Зарегистрироваться</Nav.Link>
+                                }}
+                                    href={REGISTRATION_ROUTE}>Зарегистрироваться</Nav.Link>
                             </Nav.Item>
                         </Nav>
 
