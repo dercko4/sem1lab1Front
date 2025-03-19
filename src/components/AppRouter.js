@@ -14,6 +14,7 @@ const AppRouter = observer(() => {
         const decodedToken = jwtDecode(isAuth)
         decodedToken.role === 'admin' ? isAdmin = true : isAdmin = false
     }
+    console.log(isAdmin)
     return (
         <Routes>
             {

@@ -56,10 +56,11 @@ export const updatePhone = async (phone) => {
     }
 }
 
-export const destroyUser = async () => {
+export const destroyUser = async (id_user) => {
     try {
-        const { data } = await $authHost.delete('manufacturer/delete', null, {
+        const { data } = await $authHost.delete('user/delete', {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            data: { id_user: id_user }
         }
         )
         return data
@@ -69,14 +70,12 @@ export const destroyUser = async () => {
     }
 }
 
-
 export const findOneUser = async () => {
     try {
         const { data } = await $authHost.post('user/findOne', null, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
         )
-        console.log(data)
         return data
     } catch (error) {
         alert(error.response.data.message)
@@ -91,6 +90,18 @@ export const changeProfile = async (FIO, phone, email, address, password, checkP
         const { data } = await $authHost.patch('user/patch', {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             data: obj
+        })
+        return data
+    } catch (error) {
+        alert(error.response.data.message)
+        return
+    }
+}
+
+export const getAllUsers = async () => {
+    try {
+        const { data } = await $authHost.get('user/getAll', {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
         return data
     } catch (error) {

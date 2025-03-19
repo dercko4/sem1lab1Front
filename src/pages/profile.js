@@ -21,11 +21,11 @@ const Profile = observer(() => {
     const { userRequest } = useContext(Context)
     const submit = async () => {
         try {
-            if(password!=passwordCheck) {
+            if (password != passwordCheck) {
                 alert("Пароли не совпадают!")
                 return
             }
-            const response = await changeProfile(email, phone, password, passwordCheck, FIO, address)
+            const response = await changeProfile(FIO, phone, email, address, password, passwordCheck)
             if (!response) return
         } catch (error) {
             console.log(error)
@@ -117,7 +117,16 @@ const Profile = observer(() => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Новый пароль..."
                         />
-
+                        <Form.Control
+                            style={{
+                                backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
+                                height: "70px", width: "520px", paddingLeft: "28px", fontSize: "32px", fontFamily: "Jost, normal",
+                                marginLeft: "80px", marginTop: "40px", display: "inline-block"
+                            }}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Введите адрес..."
+                        />
                         <Form.Control
                             style={{
                                 backgroundColor: "#D9D9D9", opacity: "80%", border: "1px solid black", borderRadius: "15px",
@@ -128,6 +137,7 @@ const Profile = observer(() => {
                             onChange={(e) => setPasswordCheck(e.target.value)}
                             placeholder="Введите пароль ещё раз..."
                         />
+
                         <Button
                             variant={"outline-dark"}
                             style={{

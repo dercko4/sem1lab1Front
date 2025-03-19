@@ -1,7 +1,8 @@
 import Registration from "./pages/registration"
-import { LOGIN_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
+import { DELETEUSER_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
 import { Auth } from "./pages/auth"
 import Profile from "./pages/profile"
+import DeleteUser from "./pages/admin"
 
 export const authRoutes = [
     {
@@ -11,6 +12,11 @@ export const authRoutes = [
 ]
 
 export const adminRoutes = [
+    {
+        path: DELETEUSER_ROUTE,
+        Component: <DeleteUser />
+    }
+
 ]
 
 export const publicRoutes = [
